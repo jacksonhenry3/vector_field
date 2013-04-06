@@ -1,0 +1,48 @@
+<html>
+<body>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
+<script>
+	var w = 500,h=500;
+	var svg = d3.select("body").append("svg:svg")
+				.attr("width", w)
+				.attr("height", h)
+				.style("pointer-events", "all")
+				.style("background-color",'#222')
+				.on("load",circles)
+				.on("mousemove", redraw);
+				 
+	function circles() {
+		data = []
+		var space = 13;
+		var offset = space/2;
+		var loop = w/space;
+		for (var i=0;i<loop;i++){
+			for (var j=0;j<loop;j++){
+				x2 = i*space+offset;
+				y2 = j*space+offset;
+				data.push([x2,y2])
+			}
+		}
+		svg.selectAll("line")
+			.data(data)
+			.enter()
+			.append("line")
+			.attr("x1",100)
+			.attr("x2",200)
+			.attr("y1",200)
+			.attr("y2",100)
+			.attr("stroke","red")
+			.style("stroke-opacity", 0);
+	}
+		function redraw(){
+			var m = d3.svg.mouse(this);
+		svg.selectAll("line")
+			.attr("x1",function(d){return ((d[0])-(m[0]-d[0])/(10))})
+			.attr("x2",function(d){return d[0]})
+			.attr("y1",function(d){return ((d[1])-(m[1]-d[1])/(10))})
+			.attr("y2",function(d){return d[1]})
+			.style("stroke-opacity", 1)
+			.attr("stroke","rgb(200,200,20)");}
+</script>
+</body>
+<html>
